@@ -15,3 +15,8 @@ jobs:
           node-version: '22'
       - run: python -m unittest test_letterbox test_cloud
       - run: node --check app.js && node --check interactions.js && node --check sponsor-ui.js && node --check calendar.js
+      - name: Build and check the actual non-root container
+        run: |
+          docker build -t letterbox-ci .
+          docker run --rm --entrypoint python letterbox-ci -c "import os,shutil,server,sponsors; assert os.getuid()!=0; assert shutil.which('tesseract'); sponsors.WORK.mkdir(parents=True,exist_ok=True); print('Container imports, OCR and writable runtime passed.')"
+
