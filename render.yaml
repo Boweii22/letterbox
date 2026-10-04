@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: letterbox
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GEMMA_API_KEY
+        sync: false
