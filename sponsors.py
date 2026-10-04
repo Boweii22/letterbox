@@ -5,7 +5,7 @@ from pathlib import Path
 import urllib.parse, urllib.request
 
 ROOT=Path(__file__).resolve().parent
-WORK=Path(os.environ.get('LETTERBOX_DATA_DIR',str(ROOT.parents[1]/'work'/'sponsors')))
+WORK=Path(os.environ.get('LETTERBOX_DATA_DIR') or ROOT/'runtime')
 KEYS={'GEMMA_API_KEY','SENTRY_DSN','ELEVENLABS_API_KEY','ELEVENLABS_VOICE_ID','SERPAPI_API_KEY','MONGODB_URI','BACKBOARD_API_KEY','TIGER_DATABASE_URL','TABPFN_TOKEN','LETTERBOX_OLLAMA','LETTERBOX_OLLAMA_KEY','LETTERBOX_PUBLIC_ORIGIN'}
 def load_config():
     path=WORK/'secrets.json'
@@ -103,7 +103,7 @@ def safe_run(result,elapsed,failed=False):
         'elapsed_seconds':round(elapsed,3),'output_tokens':int(metrics.get('output_tokens',0)),
         'matched':int(metrics.get('matched',0)),'total':int(metrics.get('total',0)),
         'flagged':sum(bool(d.get('issues')) for d in result.get('details',[])),
-        'failed':bool(failed),'mode':result.get('mode') if result.get('mode') in ('local','source') else None}
+        'failed':bool(failed),'mode':result.get('mode') if result.get('mode') in ('local','cloud','source') else None}
 
 QUEUE=None
 def _atlas_worker():
@@ -191,3 +191,4 @@ def official_sources(organisation,consent):
         if parsed.scheme=='https' and not parsed.username and not parsed.password and (host in ('gov.uk','nhs.uk') or host.endswith(('.gov.uk','.nhs.uk'))):
             results.append({'title':str(item.get('title','Official website'))[:150],'url':link,'snippet':str(item.get('snippet',''))[:350]})
     return {'results':results[:5],'notice':'Search results do not establish that your letter is genuine. Check contact details on the official website.'}
+
