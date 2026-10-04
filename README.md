@@ -1,6 +1,8 @@
 # Letterbox cloud demo
 
-Source-linked letter explanations, speech and confirmed reminders. This package is prepared for Render’s free Docker web service, with Google’s free hosted Gemma 4 API. It is not deployed until a real public URL has been verified.
+Source-linked letter explanations, speech and confirmed reminders. Try the public demo: **https://letterbox-cftz.onrender.com/**. It runs on Render’s free Docker web service with Google’s free hosted Gemma 4 API and does not need the developer laptop.
+
+Verified on 4 October 2026: live Gemma returned 4/4 matched source quotes in 4.65 seconds on a fictional test; public photo OCR, ElevenLabs speech, official-domain SerpApi search, and Sentry cloud tracing succeeded. Atlas is configured but its cloud write remains unverified while hosting network access is pending. A matched quote does not prove interpretation accuracy.
 
 ## Deploy
 Publish this folder alone to GitHub. Create a Render Docker web service from that repository, select **Free**, and add `GEMMA_API_KEY` as a secret environment variable. Do not enable billing for Google or select paid Render plans. Render supplies `RENDER_EXTERNAL_HOSTNAME`; the app accepts that exact HTTPS origin. No Ollama server or developer laptop is needed.
